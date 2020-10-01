@@ -4,3 +4,6 @@
 
 # Objective:
 ### the aim is to train a Machine learning model that will predict the type of cancer from which the person is suffering from the given parameters.
+
+# Solution :
+### The model is build by using decision tree classifier algorithm.
