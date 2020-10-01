@@ -2,11 +2,8 @@
 import pandas as pd
 from sklearn.impute import SimpleImputer
 from sklearn.preprocessing import StandardScaler
-from sklearn.model_selection import train_test_split,GridSearchCV
-import keras
-from keras.models import Sequential
-from keras.layers import Dropout,Dense,Activation
-from keras.wrappers.scikit_learn import KerasClassifier
+from sklearn.model_selection import train_test_split
+from sklearn.tree import DecisionTreeClassifier
 from sklearn import metrics
 import matplotlib.pyplot as plt
 
@@ -29,34 +26,7 @@ scaler=StandardScaler()
 x_train=scaler.fit_transform(x_train)
 x_test=scaler.fit_transform(x_test)
 
-def hyper_parameter_training(layer,activation):
-  model=Sequential()
-  for i,node in enumerate(layer):
-    if i==0:
-      model.add(Dense(node,input_dim=x_train.shape[1]))
-      model.add(Activation(activation))
-      model.add(Dropout(0.3))
-    else:
-      model.add(Dense(node))
-      model.add(Activation(activation))
-      model.add(Dropout(0.3))
-  model.add(Dense(units=1,kernel_initializer='glorot_uniform',activation='sigmoid'))
-  model.compile(loss='binary_crossentropy',optimizer='adam',metrics=['accuracy'])
-  return model
-
-model=KerasClassifier(hyper_parameter_training)
-
-layers=[(10,),(30,20,10),(40,20)]
-activations=['sigmoid','relu']
-
-param_grid=dict(layer=layers,activation=activations,batch_size=[128,256],epochs=[30])
-
-grid=GridSearchCV(model,param_grid,cv=5)
-
-grid.fit(x_train,y_train)
-
-y_pred=grid.predict(x_test)
-y_pred=(y_pred>0.5)
-
-val=metrics.accuracy_score(y_test,y_pred)
-print("accuracy is =",str(val*100)+" %")
+lr = DecisionTreeClassifier(random_state=0)
+lr.fit(x_train,y_train)
+y_pred = lr.predict(x_test)
+print("Accuracy is =",metrics.accuracy_score(y_test,y_pred))
