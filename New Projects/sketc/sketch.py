@@ -1,7 +1,7 @@
 import cv2
 import numpy as np
 #insert your image
-img=cv2.imread("akp.jpg")
+img=cv2.imread("suv.jpg")
 scale=0.40
 height=int(img.shape[0]*scale)
 width=int(img.shape[1]*scale)
@@ -25,7 +25,7 @@ inv=255-gray
 #apply bluring
 blur=cv2.GaussianBlur(src=inv,ksize=(15,15),sigmaX=0,sigmaY=0)
 #draw sketch
-sketch=cv2.divide(gray,255-blur,scale=256)
+sketch = cv2.bitwise_and(gray,255-blur,mask=None)
 cv2.imshow("sketch",sketch)
 cv2.waitKey(0)
 cv2.destroyAllWindows()
